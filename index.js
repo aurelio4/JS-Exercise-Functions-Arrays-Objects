@@ -183,8 +183,11 @@ function getLastCarInfo(index) {
  * it will return `This is a Lincoln Navigator`.
 */
 function getCarInfoById(inventory, id) {
-  var car = inventory.find(item => item.id === id);
-  return `This is a ${car.car_make} ${car.car_model}`
+  for(let i = 0; i < inventory.length; i++) {
+    if(id === inventory[i].id) {
+      return `This is a ${inventory[i].car_make} ${inventory[i].car_model}`
+    }
+  }
 }
 
 /**
@@ -197,10 +200,9 @@ function getCarInfoById(inventory, id) {
 */
 function sortCarInventory(inventory) {
   inventory.sort((a, b) => {
-    if (a.car_model > b.car_model) return 1
+    if(a.car_model > b.car_model) return 1
     return a.car_model === b.car_model ? 0 : -1
   })
-
   return inventory
 }
 
@@ -214,7 +216,11 @@ function sortCarInventory(inventory) {
  * getModelYears returns an array containing all the 'car_year's in the inventory.
 */
 function getModelYears(inventory) {
-  return inventory.map(listing => listing.car_year)
+  let carYears = []
+  for(let i = 0; i < inventory.length; i++) {
+    carYears.push(inventory[i].car_year)
+  }
+  return carYears
 }
 
 /**
@@ -230,7 +236,13 @@ function getModelYears(inventory) {
  * in the same order as they appear in the original inventory.
 */
 function getOlderCars(inventory, max_year) {
-  return inventory.filter(car => car.car_year <= max_year)
+  let car = []
+  for(let i = 0; i < inventory.length; i++) {
+    if(inventory[i].car_year <= max_year) {
+      car.push(inventory[i])
+    }
+  }
+  return car
 }
 
 /**
@@ -245,8 +257,18 @@ function getOlderCars(inventory, max_year) {
  * in the same order as they appear in the original inventory.
 */
 function getGermanCars(inventory) {
-  const germanCars = new Set(['Audi', 'Mercedes-Benz', 'Volkswagen', 'BMW'])
-  return inventory.filter(car => germanCars.has(car.car_make))
+  const germanCars = ['Audi', 'Mercedes-Benz', 'Volkswagen', 'BMW']
+  let cars = []
+
+  for(let i = 0; i < inventory.length; i++) {
+    for(let j = 0; j < germanCars.length; j++) {
+      if(inventory[i].car_make === germanCars[j]) {
+        cars.push(inventory[i])
+      }
+    }
+  }
+
+  return cars
 }
 
 /**
@@ -271,12 +293,6 @@ function getGermanCars(inventory) {
 const sum = ((a, b) => a + b)
 const addFive = (num => num + 5)
 const argTimesTwo = (num => num * 2)
-
-/*
-const sum = null; // code here!
-const addFive = null; // code here!
-const argTimesTwo = null; // code here!
-*/
 
 /**
  * ### Challenge `carMaker`
